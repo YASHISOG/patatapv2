@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <script type="text/javascript" src="/assets/js/paper-full.js"></script>
+    <script type="text/javascript" src="/assets/js/howler.js"></script>
+    <script type="text/javascript" src="/assets/js/particles.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+
+        // defining the sounds using howler js. defined using an object
+        var keydatas = {
+            a: {sound: new Howl({urls: ['assets/sounds/bubbles.mp3']})},
+            b: {sound: new Howl({urls: ['assets/sounds/clay.mp3']})},
+            c: {sound: new Howl({urls: ['assets/sounds/confetti.mp3']})},
+            d: {sound: new Howl({urls: ['assets/sounds/corona.mp3']})},
+            e: {sound: new Howl({urls: ['assets/sounds/dotted-spiral.mp3']})},
+            f: {sound: new Howl({urls: ['assets/sounds/flash-1.mp3']})},
+            g: {sound: new Howl({urls: ['assets/sounds/flash-2.mp3']})},
+            h: {sound: new Howl({urls: ['assets/sounds/flash-3.mp3']})},
+            i: {sound: new Howl({urls: ['assets/sounds/glimmer.mp3']})},
+            j: {sound: new Howl({urls: ['assets/sounds/moon.mp3']})},
+            k: {sound: new Howl({urls: ['assets/sounds/pinwheel.mp3']})},
+            l: {sound: new Howl({urls: ['assets/sounds/piston-1.mp3']})},
+            m: {sound: new Howl({urls: ['assets/sounds/piston-2.mp3']})},
+            n: {sound: new Howl({urls: ['assets/sounds/piston-3.mp3']})},
+            o: {sound: new Howl({urls: ['assets/sounds/prism-1.mp3']})},
+            p: {sound: new Howl({urls: ['assets/sounds/prism-2.mp3']})},
+            q: {sound: new Howl({urls: ['assets/sounds/prism-3.mp3']})},
+            r: {sound: new Howl({urls: ['assets/sounds/splits.mp3']})},
+            s: {sound: new Howl({urls: ['assets/sounds/squiggle.mp3']})},
+            t: {sound: new Howl({urls: ['assets/sounds/strike.mp3']})},
+            u: {sound: new Howl({urls: ['assets/sounds/suspension.mp3']})},
+            v: {sound: new Howl({urls: ['assets/sounds/timer.mp3']})},
+            w: {sound: new Howl({urls: ['assets/sounds/ufo.mp3']})},
+            x: {sound: new Howl({urls: ['assets/sounds/veil.mp3']})},
+            y: {sound: new Howl({urls: ['assets/sounds/wipe.mp3']})},
+            z: {sound: new Howl({urls: ['assets/sounds/zig-zag.mp3']})},
+            0: {sound: new Howl({urls: ['assets/sounds/piston-1.mp3']})},
+            1: {sound: new Howl({urls: ['assets/sounds/piston-2.mp3']})},
+            2: {sound: new Howl({urls: ['assets/sounds/piston-3.mp3']})},
+            3: {sound: new Howl({urls: ['assets/sounds/prism-1.mp3']})},
+            4: {sound: new Howl({urls: ['assets/sounds/prism-2.mp3']})},
+            5: {sound: new Howl({urls: ['assets/sounds/prism-3.mp3']})},
+            6: {sound: new Howl({urls: ['assets/sounds/splits.mp3']})},
+            7: {sound: new Howl({urls: ['assets/sounds/strike.mp3']})},
+            8: {sound: new Howl({urls: ['assets/sounds/glimmer.mp3']})},
+            9: {sound: new Howl({urls: ['assets/sounds/moon.mp3']})}
+        }
+
+        var circles = [];
+
+        function onKeyDown(event) {
+            //plays the howl depending on the event.key or the letter pressed
+            keydatas[event.key].sound.play()
+
+            // returns the maximum view height/width as newpt(x,y) 
+            var newPt = new Point(view.size.width, view.size.height);
+
+            // returns random point not not greaterthan or equal to 0 in (x,y) syntax
+            var randomPt = Point.random(); 
+
+            // multiply both
+            var maxPt = newPt * randomPt;
+
+            // push the instance of the cirle object the array circles
+            // 2nd parameter is radius which is also random number manually
+            var newCrc = new Path.Circle(maxPt, Math.floor(Math.random() * 1000));
+
+            // fill the circle with random color
+            newCrc.fillColor = Color.random();
+            circles.push(newCrc);
+
+            // BEHIND THE SCENES: removes 5 circle objects every 5 seconds
+            // this is to prevent excess memorry usage of the array circle but causes some bugs
+            // setInterval(function(){circles.splice(0, 5)}, 5000); // this one or below
+
+            if (circles.length === 13) {
+                circles.splice(0, 3);
+            } // this removes 3 elements if the length is already 13 hence, length will not be greater than 13 anymore
+        }
+
+        // animation to change the color of the circle hue changes to 1 every frame and shrink it
+        // looping into array of circles to apply that animation
+        function onFrame() {
+            for (var i=0; i<=circles.length-1; i++) {
+                circles[i].fillColor.hue += 1; // adds one to the hue every frame
+                circles[i].scale(0.8); // scales it up to .01% every frame. changes to 0.9 to shrink it
+            }
+        }
+
+    </script>
+    <title>PatatapCloneYash</title>
+</head>
+
+<body>
+
+    <div id="particles-js"></div>
+
+    <header id="header">
+
+        <h1 id="header-text">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="38" height="38" viewBox="0 0 24 24" id="patatxt">
+                <path
+                    d="M6 23v-11c-4.036 0-6 2.715-6 5.5 0 2.807 1.995 5.5 6 5.5zm18-5.5c0-2.785-1.964-5.5-6-5.5v11c4.005 0 6-2.693 6-5.5zm-12-13.522c-3.879-.008-6.861 2.349-7.743 6.195-.751.145-1.479.385-2.161.716.629-5.501 4.319-9.889 9.904-9.889 5.589 0 9.29 4.389 9.916 9.896-.684-.334-1.415-.575-2.169-.721-.881-3.85-3.867-6.205-7.747-6.197z" />
+            </svg>
+            <b id="headtext">P A T A T A P V2</b>
+        </h1>
+
+        <small id="header-subtext">Please press any numbers or characters on your keyboard</small>
+        <small id="header-subtext"><em>"Just Try To Make a Beat 🎵"</em></small>
+        <h3>Github@YashIsOG</h3>
+        <h5>Inspired By @RookieMonkey</h5>
+    </header>
+    <canvas id="myCanvas"></canvas>
+
+</body>
+
+<script defer src="./assets/js/particles_config.js"></script>
+
+</html>
